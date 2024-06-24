@@ -5,14 +5,14 @@
     </template>
     <a-form :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }" class="r-form">
       <a-form-item label="区块">
-        <a-input-number v-model:value="height" style="width: 100%">
+        <a-input-number v-model:value="height" style="width: 100%" min="1">
           <template #addonBefore>
             <span>#</span>
           </template>
         </a-input-number>
       </a-form-item>
       <a-form-item label="随机数">
-        <a-input v-model:value="nonce"/>
+        <a-input-number v-model:value="nonce" min="1" style="width: 100%"/>
       </a-form-item>
       <a-form-item label="数据">
         <a-textarea :rows="6" v-model:value="data"/>

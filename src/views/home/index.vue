@@ -8,7 +8,7 @@
             <a-textarea :rows="6" v-model:value="data" @change="doSubmit"/>
           </a-form-item>
           <a-form-item label="哈希">
-            <a-input disabled v-model:value="hash"/>
+            <a-input disabled v-model:value="hash" style="font-size: 12px"/>
           </a-form-item>
         </a-form>
       </a-card>
@@ -46,7 +46,7 @@ const doSubmit = () => {
 
     .r-card {
       margin-top: 10vh;
-      min-width: 650px;
+      min-width: 560px;
     }
   }
 
