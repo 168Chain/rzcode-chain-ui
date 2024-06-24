@@ -3,12 +3,9 @@
     <div class="contain">
       <p class="title">开启您的区块链学习旅途!</p>
       <a-card class="r-card" title="SHA256">
-        <template #extra>
-          <a-button type="primary" @click="doSubmit">确认</a-button>
-        </template>
         <a-form :labelCol="{ span: 2 }" :wrapperCol="{ span: 22 }" class="r-form">
           <a-form-item label="数据">
-            <a-textarea :rows="6" v-model:value="data"/>
+            <a-textarea :rows="6" v-model:value="data" @change="doSubmit"/>
           </a-form-item>
           <a-form-item label="哈希">
             <a-input disabled v-model:value="hash"/>
@@ -26,7 +23,10 @@ import CryptoJS from "crypto-js"
 const hash = ref("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
 
 const data = ref()
-const doSubmit = () => hash.value = CryptoJS.SHA256(data.value).toString();
+const doSubmit = () => {
+  debugger
+  hash.value = CryptoJS.SHA256(data.value).toString();
+}
 </script>
 <style lang="scss">
 .container {
