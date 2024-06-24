@@ -9,27 +9,27 @@
       </div>
       <div class="navlist">
         <div class="navitem">
-          <p @click="doMenu('donate')">区块</p>
+          <p @click="doMenu('block')">区块</p>
         </div>
       </div>
       <div class="navlist">
         <div class="navitem">
-          <p @click="doMenu('donate')">区块链</p>
+          <p @click="doMenu('chain')">区块链</p>
         </div>
       </div>
       <div class="navlist">
         <div class="navitem">
-          <p @click="doMenu('donate')">分布式</p>
+          <p @click="doMenu('dist')">分布式</p>
         </div>
       </div>
       <div class="navlist">
         <div class="navitem">
-          <p @click="doMenu('donate')">代币</p>
+          <p @click="doMenu('token')">代币</p>
         </div>
       </div>
       <div class="navlist">
         <div class="navitem">
-          <p @click="doMenu('donate')">币基</p>
+          <p @click="doMenu('coinbase')">币基</p>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@ import {useRouter} from "vue-router";
 
 
 const router = useRouter();
-const doMenu = (key: 'donate' | 'home') => {
+const doMenu = (key: 'donate' | 'home' | 'chain' | 'dist' | 'block' | 'token' | 'coinbase') => {
   router.push({
     name: key
   });

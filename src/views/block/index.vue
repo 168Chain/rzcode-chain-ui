@@ -5,7 +5,7 @@
         <template #extra>
           <a-button type="primary" @click="doSubmit">挖矿</a-button>
         </template>
-        <a-form :labelCol="{ span: 3 }" :wrapperCol="{ span: 22 }" class="r-form">
+        <a-form :labelCol="{ span: 2 }" :wrapperCol="{ span: 22 }" class="r-form">
           <a-form-item label="区块">
             <a-input-number v-model:value="height" style="width: 100%">
               <template #addonBefore>
@@ -55,11 +55,7 @@ const doSubmit = () => hash.value = CryptoJS.SHA256(data.value).toString();
 
     .r-card {
       margin-top: 10vh;
-      min-width: 750px;
-
-      .r-form {
-        padding: 10px 30px;
-      }
+      min-width: 650px;
     }
   }
 

@@ -6,7 +6,7 @@
         <template #extra>
           <a-button type="primary" @click="doSubmit">确认</a-button>
         </template>
-        <a-form :labelCol="{ span: 3 }" :wrapperCol="{ span: 22 }" class="r-form">
+        <a-form :labelCol="{ span: 2 }" :wrapperCol="{ span: 22 }" class="r-form">
           <a-form-item label="数据">
             <a-textarea :rows="6" v-model:value="data"/>
           </a-form-item>
@@ -46,11 +46,7 @@ const doSubmit = () => hash.value = CryptoJS.SHA256(data.value).toString();
 
     .r-card {
       margin-top: 10vh;
-      min-width: 750px;
-
-      .r-form {
-        padding: 10px 30px;
-      }
+      min-width: 650px;
     }
   }
 
