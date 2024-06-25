@@ -5,7 +5,7 @@
       <a-card class="r-card" title="SHA256">
         <a-form :labelCol="{ span: 2 }" :wrapperCol="{ span: 22 }" class="r-form">
           <a-form-item label="数据">
-            <a-textarea :rows="6" v-model:value="data" @change="doSubmit"/>
+            <a-textarea :rows="6" v-model:value="data" @change="onChange"/>
           </a-form-item>
           <a-form-item label="哈希">
             <a-input disabled v-model:value="hash" style="font-size: 12px"/>
@@ -21,12 +21,10 @@ import CryptoJS from "crypto-js"
 
 
 const hash = ref("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+const data = ref("")
 
-const data = ref()
-const doSubmit = () => {
-  debugger
-  hash.value = CryptoJS.SHA256(data.value).toString();
-}
+const onChange = () => hash.value = CryptoJS.SHA256(data.value).toString();
+
 </script>
 <style lang="scss">
 .container {
@@ -46,7 +44,7 @@ const doSubmit = () => {
 
     .r-card {
       margin-top: 10vh;
-      min-width: 560px;
+      min-width: 620px;
     }
   }
 
