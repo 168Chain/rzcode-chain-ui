@@ -37,12 +37,14 @@ const height = ref(1)
 const hash = ref("0000f727854b50bb95c054b39c1fe5c92e5ebcfa4bcb5dc279f56aa96a365e5a")
 const nonce = ref(72608)
 const data = ref("")
-const difficulty = ref(1)
 const maxNonce = 500000;
-const pattern = ref('0')
-for (let x = 0; x < difficulty.value; x++) {
-  pattern.value += '';
-}
+/**
+ * 初始化难度
+ */
+let difficulty = 4;
+let pattern = '0'.repeat(difficulty);
+console.log(pattern)
+
 
 const changeHash = () => {
   let str = height.value + nonce.value + data.value;
@@ -50,21 +52,24 @@ const changeHash = () => {
 }
 
 
-const loading = ref(false);
+const loading = ref<boolean>(false);
 
-const mine = () => {
-  loading.value = true
-  let heightStr = height.value.toString();
+/**
+ * 挖矿
+ */
+const mine = async () => {
+  loading.value = true;
+  // 延时2s
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  let val = data.value;
   for (let i = 0; i <= maxNonce; i++) {
-    let encryption = CryptoJS.SHA256(heightStr + i.toString() + data.value).toString();
-    console.log("开始挖矿" + encryption)
-    let substr = encryption.substring(0, difficulty.value)
-    if (substr === pattern.value) {
-      debugger
+    let input = `${height}${i}${val}`;
+    let encryption = CryptoJS.SHA256(input).toString();
+    let substr = encryption.substring(0, difficulty)
+    if (substr === pattern) {
       nonce.value = i;
       hash.value = encryption;
-      debugger
-      loading.value = false
+      loading.value = false;
       break;
     }
   }
@@ -75,7 +80,6 @@ const mine = () => {
 <style lang="scss">
 
 .r-card {
-  margin-top: 10vh;
   min-width: 620px;
 }
 

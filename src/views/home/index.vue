@@ -1,8 +1,11 @@
 <template>
   <div class="container">
     <div class="contain">
-      <p class="title">开启您的区块链学习旅途!</p>
-      <a-card class="r-card" title="SHA256">
+      <p class="title" style="color: #fab301">开启您的区块链学习旅途!</p>
+      <a-card class="r-card">
+        <template #title>
+          <span style="font-size: 18px;color: #fab301">SHA256</span>
+        </template>
         <a-form :labelCol="{ span: 2 }" :wrapperCol="{ span: 22 }" class="r-form">
           <a-form-item label="数据">
             <a-textarea :rows="6" v-model:value="data" @change="onChange"/>
