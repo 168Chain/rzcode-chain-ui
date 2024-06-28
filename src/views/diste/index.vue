@@ -1,33 +1,62 @@
 <template>
-  <div class="chain-container">
-    <a-row :gutter="24">
-      <!--区块链展示区-->
-      <a-col :span="12" class="left">
-        <a-card style="display: flex;flex-direction: column">
-          <template #title>
-            <span style="font-size: 18px;color: #f14545;">公链区</span>
-          </template>
-          <template #extra>
-            <a-button plain @click="mine" :loading="loading" danger>挖矿</a-button>
-            <span>&nbsp;&nbsp;</span>
-            <a-button plain @click="reset">重置</a-button>
-          </template>
-          <div class="card-box">
-            <block-card v-for="item in blocks" :block="item" :key="item.height" class="block"/>
-          </div>
-        </a-card>
+  <div class="diste-container">
+    <!--工作区-->
+    <a-row justify="space-between" style="margin-top: 25px">
+      <a-col :span="9">
+        <pool-cfg class="x-data" ref="xData" @fetch-data="calback"/>
       </a-col>
-      <!--工作区-->
-      <a-col :span="8" class="right">
-        <x-data class="x-data" ref="xData" @fetch-data="calback"/>
+      <a-col :span="15">
+        <workflow/>
       </a-col>
     </a-row>
+    <!--区块链展示区-->
+    <a-card style="display: flex;flex-direction: column;margin-top: 10px">
+      <template #title>
+        <span style="font-size: 18px;color: #f14545;">公链区</span>
+      </template>
+      <template #extra>
+        <a-button plain @click="mine" :loading="loading" danger>挖矿</a-button>
+        <span>&nbsp;&nbsp;</span>
+        <a-button plain @click="reset">重置</a-button>
+      </template>
+      <a-list class="list">
+        <a-list-item>
+          <a-list-item-meta>
+            <template #avatar>
+              <span class="meta">矿机A</span>
+            </template>
+          </a-list-item-meta>
+          <BlockChain/>
+        </a-list-item>
+        <a-list-item>
+          <a-list-item-meta>
+            <template #avatar>
+              <span class="meta">矿机B</span>
+            </template>
+          </a-list-item-meta>
+          <BlockChain/>
+        </a-list-item>
+        <a-list-item>
+          <a-list-item-meta>
+            <template #avatar>
+              <span class="meta">矿机C</span>
+            </template>
+          </a-list-item-meta>
+          <BlockChain/>
+        </a-list-item>
+      </a-list>
+
+      <!--      <div class="card-box">-->
+      <!--        <block-card v-for="item in blocks" :block="item" :key="item.height" class="block"/>-->
+      <!--      </div>-->
+    </a-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import BlockCard from '@/views/chain/modules/BlockCard.vue';
-import XData from '@/views/chain/modules/XData.vue'
+import BlockChain from './modules/BlockChain/index.vue';
+import PoolCfg from './modules/PoolCfg/index.vue';
+import Workflow from './modules/Workflow/index.vue';
 import {Block} from '@/types/block';
 import {reactive, ref} from "vue";
 import CryptoJS from "crypto-js";
@@ -108,34 +137,18 @@ const calback = (res: string) => data.value = res
 </script>
 
 <style lang="scss">
-.chain-container {
+.diste-container {
   margin: auto;
   flex-direction: column;
-  min-width: 1000px;
   max-width: 1540px;
 
-  .left {
-    margin-top: 25px;
-
-    .card-box {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      height: 75vh;
-      overflow-y: auto;
+  .list {
+    border: #fed60b 1px solid;
+    .meta {
+      color: #00b300;
+      font-weight: bold;
     }
-  }
 
-  .right {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .x-data {
-      margin-left: 80px;
-    }
   }
 }
 </style>

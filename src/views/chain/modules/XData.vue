@@ -8,11 +8,7 @@
         <a-button @click="reset">重置</a-button>
       </div>
     </template>
-    <a-form :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }">
-      <a-form-item label="数据">
-        <a-textarea :rows="8" v-model:value="data" @change="change"/>
-      </a-form-item>
-    </a-form>
+    <a-textarea :rows="8" v-model:value="data" @change="change" placeholder="请输入数据!"/>
   </a-card>
 </template>
 <script setup lang="ts">

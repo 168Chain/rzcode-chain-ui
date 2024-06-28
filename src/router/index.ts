@@ -10,7 +10,7 @@ export const constantRoutes = [
             {
                 path: 'home',
                 name: 'home',
-                component: () => import('@/views/home/index.vue')
+                component: () => import('@/views/entry/index.vue')
             },
             {
                 path: 'block',
@@ -25,7 +25,7 @@ export const constantRoutes = [
             {
                 path: 'dist',
                 name: 'dist',
-                component: () => import('@/views/dist/index.vue')
+                component: () => import('@/views/diste/index.vue')
             },
             {
                 path: 'token',
@@ -35,7 +35,7 @@ export const constantRoutes = [
             {
                 path: 'coinbase',
                 name: 'coinbase',
-                component: () => import('@/views/coinbase/index.vue')
+                component: () => import('@/views/cbase/index.vue')
             }
         ]
     }

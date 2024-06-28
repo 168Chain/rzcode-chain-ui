@@ -32,6 +32,11 @@
           <p @click="doMenu('coinbase')">币基</p>
         </div>
       </div>
+      <div class="navlist">
+        <div class="navitem">
+          <p @click="doMenu('minic')">迷你链</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,7 +46,7 @@ import {useRouter} from "vue-router";
 
 
 const router = useRouter();
-const doMenu = (key: 'donate' | 'home' | 'chain' | 'dist' | 'block' | 'token' | 'coinbase') => {
+const doMenu = (key: 'donate' | 'home' | 'chain' | 'dist' | 'block' | 'token' | 'coinbase' | 'minic') => {
   router.push({
     name: key
   });
@@ -55,7 +60,7 @@ const doMenu = (key: 'donate' | 'home' | 'chain' | 'dist' | 'block' | 'token' | 
 }
 
 .navbar {
-  padding: 0 70px;
+  padding: 0 10px;
   min-width: 1000px;
   max-width: 1540px;
   height: 65px;
