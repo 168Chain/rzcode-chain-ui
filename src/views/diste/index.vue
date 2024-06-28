@@ -6,7 +6,7 @@
         <pool-cfg class="x-data" ref="xData" @fetch-data="calback"/>
       </a-col>
       <a-col :span="15">
-        <workflow/>
+        <workflow :items="items"/>
       </a-col>
     </a-row>
     <!--区块链展示区-->
@@ -60,6 +60,45 @@ const xData = ref()
 const maxNonce = 500000;
 const data = ref("");
 
+const items = reactive([
+  {
+    title: '电脑A',
+    steps: [{
+      title: '开始',
+      status: 'wait',
+    }, {
+      title: '结束',
+      status: 'wait',
+    }]
+  },
+  {
+    title: '电脑A',
+    steps: [
+      {
+        title: '开始',
+        status: 'wait',
+      },
+      {
+        title: '结束',
+        status: 'wait',
+      }
+    ]
+  },
+  {
+    title: '电脑A',
+    steps: [
+      {
+        title: '开始',
+        status: 'wait',
+      },
+      {
+        title: '结束',
+        status: 'wait',
+      }
+    ]
+  }
+])
+
 const aBlocks = reactive([
   {
     height: 1,
@@ -96,19 +135,48 @@ const cBlocks = reactive([
 let difficulty = 4;
 let pattern = '0'.repeat(difficulty);
 
+/**
+ * 开始挖矿
+ */
 const mine = async () => {
-  loading.value = true;
-  console.log("mine start .......")
-  // 延迟2秒模拟挖矿过程
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  // 获取最新区块信息和待写入的数据
-  const lastBlock = blocks[blocks.length - 1];
-  const blockToAdd = findValidBlock(lastBlock, data.value);
-  if (blockToAdd) {
-    blocks.push(blockToAdd);
-    loading.value = false;
-  }
+  mineATask();
+  mineBTask();
+  mineCTask();
 }
+
+/**
+ * 电脑A开始挖矿
+ */
+const mineATask = () => {
+
+}
+
+/**
+ * 电脑B开始挖矿
+ */
+const mineBTask = () => {
+
+}
+
+/**
+ * 电脑C开始挖矿
+ */
+const mineCTask = () => {
+
+}
+// const mine = async () => {
+//   loading.value = true;
+//   console.log("mine start .......")
+//   // 延迟2秒模拟挖矿过程
+//   await new Promise(resolve => setTimeout(resolve, 2000));
+//   // 获取最新区块信息和待写入的数据
+//   const lastBlock = blocks[blocks.length - 1];
+//   const blockToAdd = findValidBlock(lastBlock, data.value);
+//   if (blockToAdd) {
+//     blocks.push(blockToAdd);
+//     loading.value = false;
+//   }
+// }
 
 // 寻找有效的区块
 const findValidBlock = (lastBlock: Block, newData: string) => {

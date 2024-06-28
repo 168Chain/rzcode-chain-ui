@@ -4,78 +4,22 @@
       <span style="font-size: 18px;color: #f14545;">挖矿流程</span>
     </template>
     <a-list class="list">
-      <a-list-item>
+      <a-list-item v-for="(item,index) in items" :key="index">
         <a-list-item-meta>
           <template #avatar>
-            <span class="meta">电脑A</span>
+            <span class="meta">{{ item.title }}</span>
           </template>
         </a-list-item-meta>
-        <a-steps :items="aItems" class="steps" ref="stepA"/>
-      </a-list-item>
-      <a-list-item>
-        <a-list-item-meta>
-          <template #avatar>
-            <span class="meta">电脑B</span>
-          </template>
-        </a-list-item-meta>
-        <a-steps :items="bItems" class="steps" ref="stepB"/>
-      </a-list-item>
-      <a-list-item>
-        <a-list-item-meta>
-          <template #avatar>
-            <span class="meta">电脑C</span>
-          </template>
-        </a-list-item-meta>
-        <a-steps :items="cItems" class="steps" ref="stepC"/>
+        <a-steps :items="item.steps" class="steps" :key="index"/>
       </a-list-item>
     </a-list>
   </a-card>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
-import {StepProps} from "ant-design-vue";
+import {defineProps} from "vue";
 
-const data = ref('')
+const {items} = defineProps<{ items: any[] }>();
 
-const reset = () => data.value = ""
-
-const emit = defineEmits()
-const aItems = [
-  {
-    title: '开始',
-    status: 'wait',
-  },
-  {
-    title: '结束',
-    status: 'wait',
-  },
-] as StepProps[];
-const bItems = [
-  {
-    title: '开始',
-    status: 'wait',
-  },
-  {
-    title: '结束',
-    status: 'wait',
-  },
-] as StepProps[];
-
-const cItems = [
-  {
-    title: '开始',
-    status: 'wait',
-  },
-  {
-    title: '结束',
-    status: 'wait',
-  },
-] as StepProps[];
-
-const change = async () => emit('fetch-data', data.value)
-defineExpose({
-  reset
-})
 </script>
 
 <style lang="scss">
