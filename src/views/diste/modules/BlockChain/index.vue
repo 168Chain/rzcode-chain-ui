@@ -1,19 +1,20 @@
 <template>
   <div class="blockchain-container">
-    <block-card class="block-card"/>
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
-<!--    <BlockCard class="block-card"/>-->
+    <block-card
+        v-for="block in blocks"
+        :key="block.height"
+        :block="block"
+        class="block-card"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import BlockCard from "../BlockCard/index.vue";
+import {defineProps} from "vue";
+import {Block} from "@/types/block";
+
+const {blocks} = defineProps<{ blocks: Block[] }>();
+
 </script>
 <style lang="scss">
 .blockchain-container {

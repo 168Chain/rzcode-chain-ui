@@ -5,7 +5,7 @@
     </template>
     <a-form :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }" class="r-form">
       <a-form-item label="高度">
-        <a-input-number v-model:value="height" style="width: 100%" min="1" @change="changeHash">
+        <a-input-number v-model:value="block.height" style="width: 100%" min="1" @change="changeHash">
           <template #addonBefore>
             <span>#</span>
           </template>
@@ -13,66 +13,30 @@
       </a-form-item>
       <a-form-item label="随机数">
         <a-input-number
-            v-model:value="nonce"
+            v-model:value="block.nonce"
             min="1"
             max="500000"
             style="width: 100%"
-            @change="changeHash"
         />
       </a-form-item>
       <a-form-item label="数据">
-        <a-textarea :rows="4" v-model:value="data" @change="changeHash"/>
+        <a-textarea :rows="4" v-model:value="block.data"/>
       </a-form-item>
       <a-form-item label="哈希">
-        <a-textarea :row="2" disabled v-model:value="hash" style="font-size: 12px"/>
+        <a-textarea
+            :row="2" disabled
+            v-model:value="block.hash"
+            style="font-size: 12px"
+        />
       </a-form-item>
     </a-form>
   </a-card>
 </template>
 <script lang="ts" setup>
-import {ref} from "vue";
-import CryptoJS from "crypto-js";
+import {defineProps} from "vue";
+import {Block} from "@/types/block";
 
-const height = ref(1)
-const hash = ref("0000f727854b50bb95c054b39c1fe5c92e5ebcfa4bcb5dc279f56aa96a365e5a")
-const nonce = ref(72608)
-const data = ref("")
-const maxNonce = 500000;
-/**
- * 初始化难度
- */
-let difficulty = 4;
-let pattern = '0'.repeat(difficulty);
-
-const changeHash = () => {
-  let str = height.value + nonce.value + data.value;
-  hash.value = CryptoJS.SHA256(str).toString();
-}
-
-
-const loading = ref<boolean>(false);
-
-/**
- * 挖矿
- */
-const mine = async () => {
-  loading.value = true;
-  // 延时2s
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  let val = data.value;
-  for (let i = 0; i <= maxNonce; i++) {
-    let input = `${height}${i}${val}`;
-    let encryption = CryptoJS.SHA256(input).toString();
-    let substr = encryption.substring(0, difficulty)
-    if (substr === pattern) {
-      nonce.value = i;
-      hash.value = encryption;
-      loading.value = false;
-      break;
-    }
-  }
-}
-
+const {block} = defineProps<{ block: Block }>();
 
 </script>
 <style lang="scss">

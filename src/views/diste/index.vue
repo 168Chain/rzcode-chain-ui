@@ -24,7 +24,7 @@
               <span class="meta">电脑A</span>
             </template>
           </a-list-item-meta>
-          <BlockChain/>
+          <block-chain :blocks="aBlocks" ref="aBlockChain"/>
         </a-list-item>
         <a-list-item>
           <a-list-item-meta>
@@ -32,7 +32,7 @@
               <span class="meta">电脑B</span>
             </template>
           </a-list-item-meta>
-          <BlockChain/>
+          <block-chain :blocks="bBlocks" ref="bBlockChain"/>
         </a-list-item>
         <a-list-item>
           <a-list-item-meta>
@@ -40,7 +40,7 @@
               <span class="meta">电脑C</span>
             </template>
           </a-list-item-meta>
-          <BlockChain/>
+          <block-chain :blocks="cBlocks" ref="cBlockChain"/>
         </a-list-item>
       </a-list>
     </a-card>
@@ -57,10 +57,10 @@ import CryptoJS from "crypto-js";
 
 const loading = ref(false)
 const xData = ref()
+const maxNonce = 500000;
+const data = ref("");
 
-
-// 初始化区块信息函数
-const blocks = reactive([
+const aBlocks = reactive([
   {
     height: 1,
     nonce: 49691,
@@ -70,8 +70,25 @@ const blocks = reactive([
   }
 ])
 
-const maxNonce = 500000;
-const data = ref("");
+const bBlocks = reactive([
+  {
+    height: 1,
+    nonce: 49691,
+    data: '第一笔交易记录数据',
+    previous: '0000000000000000000000000000000000000000000000000000000000000000',
+    hash: '0000b61c8bb61a6faa7c46e4872623b6e4caac5a0ae3a3b416849b216d0d62f6'
+  }
+])
+
+const cBlocks = reactive([
+  {
+    height: 1,
+    nonce: 49691,
+    data: '第一笔交易记录数据',
+    previous: '0000000000000000000000000000000000000000000000000000000000000000',
+    hash: '0000b61c8bb61a6faa7c46e4872623b6e4caac5a0ae3a3b416849b216d0d62f6'
+  }
+])
 
 /**
  * 初始化难度
