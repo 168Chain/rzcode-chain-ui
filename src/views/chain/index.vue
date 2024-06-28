@@ -35,8 +35,9 @@ import CryptoJS from "crypto-js";
 const loading = ref(false)
 const xData = ref()
 
-
-// 初始化区块信息函数
+/**
+ * 初始化区块信息函数
+ */
 const blocks = reactive([
   {
     height: 1,
@@ -70,7 +71,11 @@ const mine = async () => {
   }
 }
 
-// 寻找有效的区块
+/**
+ * 寻找有效的区块
+ * @param lastBlock
+ * @param newData
+ */
 const findValidBlock = (lastBlock: Block, newData: string) => {
   const height = lastBlock.height + 1;
   const previous = lastBlock.hash;

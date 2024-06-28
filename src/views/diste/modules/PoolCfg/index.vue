@@ -9,18 +9,18 @@
     <a-form>
       <a-row justify="space-between">
         <a-col :span="7">
-          <a-form-item label="矿机A">
-            <a-select/>
+          <a-form-item label="电脑A">
+            <a-select v-model:value="aGpu" :options="computers"/>
           </a-form-item>
         </a-col>
         <a-col :span="7">
-          <a-form-item label="矿机B">
-            <a-select/>
+          <a-form-item label="电脑B">
+            <a-select v-model:value="bGpu" :options="computers"/>
           </a-form-item>
         </a-col>
         <a-col :span="7">
-          <a-form-item label="矿机C">
-            <a-select/>
+          <a-form-item label="电脑C">
+            <a-select v-model:value="cGpu" :options="computers"/>
           </a-form-item>
         </a-col>
       </a-row>
@@ -30,12 +30,28 @@
     </a-form>
   </a-card>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import {ref} from "vue";
 
 const data = ref('')
 
-const reset = () => data.value = ""
+const reset = () => {
+
+}
+const aGpu = ref('3');
+const bGpu = ref('2');
+const cGpu = ref('1');
+
+const computers = [{
+  value: '1',
+  label: "4核GPU"
+}, {
+  value: '2',
+  label: "8h核GPU"
+}, {
+  value: '3',
+  label: "16核GPU"
+}]
 
 const emit = defineEmits()
 const change = async () => emit('fetch-data', data.value)

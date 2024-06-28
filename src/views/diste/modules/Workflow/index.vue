@@ -7,7 +7,7 @@
       <a-list-item>
         <a-list-item-meta>
           <template #avatar>
-            <span class="meta">A</span>
+            <span class="meta">电脑A</span>
           </template>
         </a-list-item-meta>
         <a-steps :items="aItems" class="steps" ref="stepA"/>
@@ -15,7 +15,7 @@
       <a-list-item>
         <a-list-item-meta>
           <template #avatar>
-            <span class="meta">B</span>
+            <span class="meta">电脑B</span>
           </template>
         </a-list-item-meta>
         <a-steps :items="bItems" class="steps" ref="stepB"/>
@@ -23,7 +23,7 @@
       <a-list-item>
         <a-list-item-meta>
           <template #avatar>
-            <span class="meta">C</span>
+            <span class="meta">电脑C</span>
           </template>
         </a-list-item-meta>
         <a-steps :items="cItems" class="steps" ref="stepC"/>
@@ -90,6 +90,7 @@ defineExpose({
     }
 
     .steps {
+      width: 93%;
       padding: 15px 0;
     }
 

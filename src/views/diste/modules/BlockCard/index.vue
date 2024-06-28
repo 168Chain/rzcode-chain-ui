@@ -3,7 +3,7 @@
     <template #title>
       <span style="font-size: 18px;color: #fab301">区块</span>
     </template>
-    <a-form :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }" class="r-form">
+    <a-form :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }" class="r-form">
       <a-form-item label="高度">
         <a-input-number v-model:value="height" style="width: 100%" min="1" @change="changeHash">
           <template #addonBefore>
@@ -21,10 +21,10 @@
         />
       </a-form-item>
       <a-form-item label="数据">
-        <a-textarea :rows="6" v-model:value="data" @change="changeHash"/>
+        <a-textarea :rows="4" v-model:value="data" @change="changeHash"/>
       </a-form-item>
       <a-form-item label="哈希">
-        <a-input disabled v-model:value="hash" style="font-size: 12px"/>
+        <a-textarea :row="2" disabled v-model:value="hash" style="font-size: 12px"/>
       </a-form-item>
     </a-form>
   </a-card>

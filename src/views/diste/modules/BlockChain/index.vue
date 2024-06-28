@@ -1,14 +1,15 @@
 <template>
   <div class="blockchain-container">
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
-    <BlockCard class="block-card"/>
+    <block-card class="block-card"/>
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
+<!--    <BlockCard class="block-card"/>-->
   </div>
 </template>
 <script setup lang="ts">

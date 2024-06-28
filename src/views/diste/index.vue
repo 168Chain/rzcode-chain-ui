@@ -16,14 +16,12 @@
       </template>
       <template #extra>
         <a-button plain @click="mine" :loading="loading" danger>挖矿</a-button>
-        <span>&nbsp;&nbsp;</span>
-        <a-button plain @click="reset">重置</a-button>
       </template>
       <a-list class="list">
         <a-list-item>
           <a-list-item-meta>
             <template #avatar>
-              <span class="meta">矿机A</span>
+              <span class="meta">电脑A</span>
             </template>
           </a-list-item-meta>
           <BlockChain/>
@@ -31,7 +29,7 @@
         <a-list-item>
           <a-list-item-meta>
             <template #avatar>
-              <span class="meta">矿机B</span>
+              <span class="meta">电脑B</span>
             </template>
           </a-list-item-meta>
           <BlockChain/>
@@ -39,16 +37,12 @@
         <a-list-item>
           <a-list-item-meta>
             <template #avatar>
-              <span class="meta">矿机C</span>
+              <span class="meta">电脑C</span>
             </template>
           </a-list-item-meta>
           <BlockChain/>
         </a-list-item>
       </a-list>
-
-      <!--      <div class="card-box">-->
-      <!--        <block-card v-for="item in blocks" :block="item" :key="item.height" class="block"/>-->
-      <!--      </div>-->
     </a-card>
   </div>
 </template>
@@ -144,6 +138,7 @@ const calback = (res: string) => data.value = res
 
   .list {
     border: #fed60b 1px solid;
+
     .meta {
       color: #00b300;
       font-weight: bold;
