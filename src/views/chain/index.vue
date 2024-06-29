@@ -5,7 +5,7 @@
       <a-col :span="12" class="left">
         <a-card style="display: flex;flex-direction: column">
           <template #title>
-            <span style="font-size: 18px;color: #f14545;">公链区</span>
+            <span style="font-size: 18px;color: #f14545;">公链</span>
           </template>
           <template #extra>
             <a-button plain @click="mine" :loading="loading" danger>挖矿</a-button>

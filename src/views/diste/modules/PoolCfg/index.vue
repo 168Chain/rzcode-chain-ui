@@ -1,7 +1,7 @@
 <template>
   <a-card style="min-height: 370px">
     <template #title>
-      <span style="font-size: 18px;color: #f14545;">操作区</span>
+      <span style="font-size: 18px;color: #f14545;">配置</span>
     </template>
     <template #extra>
       <a-button plain @click="reset">重置</a-button>

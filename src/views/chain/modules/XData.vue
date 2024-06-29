@@ -1,7 +1,7 @@
 <template>
   <a-card class="r-card">
     <template #title>
-      <span style="font-size: 18px;color: #f14545;">数据区</span>
+      <span style="font-size: 18px;color: #f14545;">数据</span>
     </template>
     <template #extra>
       <div>

@@ -1,10 +1,10 @@
 <template>
   <a-card class="workflow-card">
     <template #title>
-      <span style="font-size: 18px;color: #f14545;">挖矿流程</span>
+      <span style="font-size: 18px;color: #f14545;">电脑</span>
     </template>
     <a-list class="list">
-      <a-list-item v-for="(item,index) in items" :key="index">
+      <a-list-item v-for="(item,index) in items" :key="index" style="min-height: 87px">
         <a-list-item-meta>
           <template #avatar>
             <span class="meta">{{ item.title }}</span>
