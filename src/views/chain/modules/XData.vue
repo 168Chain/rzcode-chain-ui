@@ -16,7 +16,10 @@ import {ref} from "vue";
 
 const data = ref('')
 
-const reset = () => data.value = ""
+const reset = () => {
+  data.value = "";
+  change();
+}
 
 const emit = defineEmits()
 const change = async () => emit('fetch-data', data.value)

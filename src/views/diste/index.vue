@@ -68,60 +68,66 @@ const cGpu = ref("3");
 const board = reactive([
   {
     title: '电脑A',
-    steps: [{
-      title: '开始',
-      status: 'wait'
-    }, {
-      title: '打包',
-      status: 'wait'
-    }, {
-      title: '计算',
-      status: 'wait'
-    }, {
-      title: '同步',
-      status: 'wait'
-    }, {
-      title: '结束',
-      status: 'wait'
-    }] as StepProps[]
+    steps: [
+      {
+        title: '开始',
+        status: 'wait'
+      }, {
+        title: '打包',
+        status: 'wait'
+      }, {
+        title: '计算',
+        status: 'wait'
+      }, {
+        title: '同步',
+        status: 'wait'
+      }, {
+        title: '结束',
+        status: 'wait'
+      }
+    ] as StepProps[]
   },
   {
     title: '电脑B',
-    steps: [{
-      title: '开始',
-      status: 'wait'
-    }, {
-      title: '打包',
-      status: 'wait'
-    }, {
-      title: '计算',
-      status: 'wait'
-    }, {
-      title: '同步',
-      status: 'wait'
-    }, {
-      title: '结束',
-      status: 'wait'
-    }] as StepProps[]
+    steps: [
+      {
+        title: '开始',
+        status: 'wait'
+      }, {
+        title: '打包',
+        status: 'wait'
+      }, {
+        title: '计算',
+        status: 'wait'
+      }, {
+        title: '同步',
+        status: 'wait'
+      }, {
+        title: '结束',
+        status: 'wait'
+      }
+    ] as StepProps[]
   },
   {
     title: '电脑C',
-    steps: [{
-      title: '开始',
-      status: 'wait'
-    }, {
-      title: '打包',
-      status: 'wait'
-    }, {
-      title: '计算',
-      status: 'wait'
-    }, {
-      title: '同步',
-      status: 'wait'
-    }, {
-      title: '结束',
-      status: 'wait'
-    }] as StepProps[]
+    steps: [
+      {
+        title: '开始',
+        status: 'wait'
+      }, {
+        title: '打包',
+        status: 'wait'
+      }, {
+        title: '计算',
+        status: 'wait'
+      }, {
+        title: '同步',
+        status: 'wait'
+      }, {
+        title: '结束',
+        status: 'wait'
+      }
+    ] as StepProps[]
   }
 ])
 
@@ -146,12 +152,43 @@ let pattern = '0'.repeat(difficulty);
  */
 const mine = async () => {
   loading.value = true;
+  await resetStep();
   const height: number = blocks.length + 1;
-  mineATask(height).then(r => console.error("挖矿失败.....", r));
-  mineBTask(height).then(r => console.error("挖矿失败.....", r));
-  mineCTask(height).then(r => console.error("挖矿失败.....", r));
-  loading.value = false;
+  try {
+    await Promise.all([
+      mineATask(height).then(r => console.error("挖矿失败.....", r)),
+      mineBTask(height).then(r => console.error("挖矿失败.....", r)),
+      mineCTask(height).then(r => console.error("挖矿失败.....", r))
+    ]);
+  } catch (error) {
+    console.error("挖矿过程中出现未知错误:", error);
+  } finally {
+    loading.value = false;
+  }
 }
+/**
+ * 重置步骤条
+ */
+const resetStep = async () => {
+  board.forEach(computer => {
+    computer.steps = [{
+      title: '开始',
+      status: 'wait'
+    }, {
+      title: '打包',
+      status: 'wait'
+    }, {
+      title: '计算',
+      status: 'wait'
+    }, {
+      title: '同步',
+      status: 'wait'
+    }, {
+      title: '结束',
+      status: 'wait'
+    }];
+  });
+};
 
 /**
  * 电脑A开始挖矿
@@ -178,7 +215,7 @@ const mineBTask = async (height: number) => {
   let lastBlock = blocks[blocks.length - 1];
   let blockToAdd: Block | null = await pkg(lastBlock, steps);
   blockToAdd = await compute(blockToAdd, bGpu.value, steps);
-  let flag: boolean | void = await sync(blockToAdd, height, steps).then(r => console.log(r));
+  let flag: boolean | void = await sync(blockToAdd, height, steps);
   if (flag) {
     stop(steps).then(r => console.log(r));
   }
@@ -269,16 +306,13 @@ const sync = async (blockToAdd: Block | null, height: number, steps: StepProps[]
     blocks.push(blockToAdd);
   }
   steps[3].status = 'finish';
-  debugger
   return true;
 }
 
 /**
  * 结束
  */
-const stop = async (steps: StepProps[]) => {
-  steps[4].status = 'finish';
-}
+const stop = async (steps: StepProps[]) => steps[4].status = 'finish';
 
 /**
  * 选择GPU
