@@ -3,7 +3,8 @@
     <!--工作区-->
     <a-row justify="space-between" style="margin-top: 25px">
       <a-col :span="9">
-        <pool-cfg class="x-data" ref="xData" @fetch-data="calback"/>
+        <pool-cfg class="x-data" ref="xData" :aGpu="aGpu" :bGpu="bGpu" :cGpu="cGpu" @fetch-gpu="changeGpu"
+                  @fetch-data="changeData"/>
       </a-col>
       <a-col :span="15">
         <computer :items="board"/>
@@ -145,53 +146,57 @@ let pattern = '0'.repeat(difficulty);
  */
 const mine = async () => {
   loading.value = true;
-  mineATask().then(r => console.error("挖矿失败.....", r));
-  mineBTask().then(r => console.error("挖矿失败.....", r));
-  mineCTask().then(r => console.error("挖矿失败.....", r));
+  const height: number = blocks.length + 1;
+  mineATask(height).then(r => console.error("挖矿失败.....", r));
+  mineBTask(height).then(r => console.error("挖矿失败.....", r));
+  mineCTask(height).then(r => console.error("挖矿失败.....", r));
   loading.value = false;
 }
 
 /**
  * 电脑A开始挖矿
  */
-const mineATask = async () => {
+const mineATask = async (height: number) => {
   let steps: StepProps[] = board[0].steps;
-  await start(steps).then(r => console.log(r))
+  await start(steps);
   let lastBlock = blocks[blocks.length - 1];
   let blockToAdd: Block | null = await pkg(lastBlock, steps);
   blockToAdd = await compute(blockToAdd, aGpu.value, steps);
-  let height = 2;
-  await sync(blockToAdd, height, steps).then(r => console.log(r));
-  stop(steps).then(r => console.log(r));
+  let flag: boolean | void = await sync(blockToAdd, height, steps)
+  if (flag) {
+    stop(steps).then(r => console.log(r));
+  }
 }
 
 
 /**
  * 电脑B开始挖矿
  */
-const mineBTask = async () => {
+const mineBTask = async (height: number) => {
   let steps: StepProps[] = board[1].steps;
-  await start(steps).then(r => console.log(r))
+  await start(steps);
   let lastBlock = blocks[blocks.length - 1];
   let blockToAdd: Block | null = await pkg(lastBlock, steps);
   blockToAdd = await compute(blockToAdd, bGpu.value, steps);
-  let height = 2;
-  await sync(blockToAdd, height, steps).then(r => console.log(r));
-  stop(steps).then(r => console.log(r));
+  let flag: boolean | void = await sync(blockToAdd, height, steps).then(r => console.log(r));
+  if (flag) {
+    stop(steps).then(r => console.log(r));
+  }
 }
 
 /**
  * 电脑C开始挖矿
  */
-const mineCTask = async () => {
+const mineCTask = async (height: number) => {
   let steps: StepProps[] = board[2].steps;
-  await start(steps).then(r => console.log(r))
+  await start(steps);
   let lastBlock = blocks[blocks.length - 1];
   let blockToAdd: Block | null = await pkg(lastBlock, steps);
   blockToAdd = await compute(blockToAdd, cGpu.value, steps);
-  let height = 2;
-  await sync(blockToAdd, height, steps).then(r => console.log(r));
-  stop(steps).then(r => console.log(r));
+  let flag: boolean | void = await sync(blockToAdd, height, steps);
+  if (flag) {
+    stop(steps).then(r => console.log(r));
+  }
 }
 
 /**
@@ -225,7 +230,7 @@ const pkg = async (lastBlock: Block, steps: StepProps[]) => {
  * @returns 返回Promise，表示计算操作的完成。
  */
 const compute = async (blockToAdd: Block, gpu: String, steps: StepProps[]) => {
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 2000))
   steps[2].status = 'process';
   if (gpu === "1") {
     await new Promise(resolve => setTimeout(resolve, 8000));
@@ -257,14 +262,15 @@ const sync = async (blockToAdd: Block | null, height: number, steps: StepProps[]
   steps[3].status = 'process';
   await new Promise(resolve => setTimeout(resolve, 1000))
   if (blocks.length === height) {
-    console.log("同步失败")
     steps[3].status = 'error';
-    return;
+    return false;
   }
   if (blockToAdd !== null) {
     blocks.push(blockToAdd);
   }
   steps[3].status = 'finish';
+  debugger
+  return true;
 }
 
 /**
@@ -274,7 +280,28 @@ const stop = async (steps: StepProps[]) => {
   steps[4].status = 'finish';
 }
 
-const calback = (res: string) => data.value = res
+/**
+ * 选择GPU
+ * @param res
+ */
+const changeGpu = (res: any) => {
+  const {machine, gpu} = res
+  if (machine === 'aGpu') {
+    aGpu.value = gpu
+  }
+  if (machine === 'bGpu') {
+    bGpu.value = gpu
+  }
+  if (machine === 'cGpu') {
+    cGpu.value = gpu
+  }
+}
+
+/**
+ * 改变数据
+ * @param res
+ */
+const changeData = (res: string) => data.value = res
 
 
 </script>
