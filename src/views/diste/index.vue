@@ -153,8 +153,6 @@ let pattern = '0'.repeat(difficulty);
 const mine = async () => {
   loading.value = true;
   await resetStep();
-  console.log(aGpu, bGpu, cGpu);
-  debugger
   const height: number = blocks.length + 1;
   try {
     await Promise.all([
