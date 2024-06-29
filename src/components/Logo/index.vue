@@ -1,6 +1,6 @@
 <template>
   <div class="logo" @click="toHome">
-    <a-image width="40px" class="logo-image" :src="logo"/>
+    <img width="40px" class="logo-image" :src="logo" alt="Logo"/>
     <span class="title">
       {{ settingConfig.title }}
     </span>
