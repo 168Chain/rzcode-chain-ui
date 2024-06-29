@@ -58,7 +58,12 @@ const cGpu = ref('3');
 
 
 const data = ref(null)
-const reset = () => data.value = null;
+const reset = () => {
+  data.value = null;
+  aGpu.value = "1";
+  bGpu.value = "2";
+  cGpu.value = "3";
+}
 const emit = defineEmits()
 
 const handleChange = (machine: 'a' | 'b' | 'c') => {

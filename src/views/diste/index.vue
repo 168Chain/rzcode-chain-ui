@@ -3,8 +3,12 @@
     <!--工作区-->
     <a-row justify="space-between" style="margin-top: 25px">
       <a-col :span="9">
-        <pool-cfg class="x-data" ref="xData" @fetch-gpu="changeGpu"
-                  @fetch-data="changeData"/>
+        <pool-cfg
+            class="x-data"
+            ref="poolCfg"
+            @fetch-gpu="changeGpu"
+            @fetch-data="changeData"
+        />
       </a-col>
       <a-col :span="15">
         <computer :items="board"/>
@@ -17,6 +21,8 @@
       </template>
       <template #extra>
         <a-button plain @click="mine" :loading="loading" danger>挖矿</a-button>
+        <span>&nbsp;&nbsp;</span>
+        <a-button plain @click="reset">重置</a-button>
       </template>
       <a-list class="list">
         <a-list-item>
@@ -55,7 +61,7 @@ import Computer from './modules/Computer/index.vue';
 import {Block} from '@/types/block';
 import {reactive, ref} from "vue";
 import CryptoJS from "crypto-js";
-import {StepProps} from "ant-design-vue";
+import {message, StepProps} from "ant-design-vue";
 
 const loading = ref(false)
 const xData = ref()
@@ -152,6 +158,7 @@ let pattern = '0'.repeat(difficulty);
  */
 const mine = async () => {
   loading.value = true;
+  message.info("模拟挖矿开始运行......");
   await resetStep();
   const height: number = blocks.length + 1;
   try {
@@ -164,6 +171,7 @@ const mine = async () => {
     console.error("挖矿过程中出现未知错误:", error);
   } finally {
     loading.value = false;
+    message.success("模拟挖矿结束......")
   }
 }
 /**
@@ -253,7 +261,7 @@ const pkg = async (lastBlock: Block, steps: StepProps[]) => {
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'process';
   let {height, hash} = lastBlock;
-  let blockToAdd: Block = {height: height + 1, nonce: 0, data: "", hash: "", previous: hash};
+  let blockToAdd: Block = {height: height + 1, nonce: 0, data: data.value, hash: "", previous: hash};
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'finish';
   return blockToAdd;
@@ -341,8 +349,23 @@ const changeGpu = (res: any) => {
  * 改变数据
  * @param res
  */
-const changeData = (res: string) => data.value = res
+const changeData = (res: string) => data.value = res;
+/**
+ * 重置
+ */
+const poolCfg = ref();
+const reset = () => {
+  blocks.splice(0, blocks.length, {
+    height: 1,
+    nonce: 49691,
+    data: '第一笔交易记录数据',
+    previous: '0000000000000000000000000000000000000000000000000000000000000000',
+    hash: '0000b61c8bb61a6faa7c46e4872623b6e4caac5a0ae3a3b416849b216d0d62f6'
+  });
+  poolCfg.value.reset();
+  resetStep();
 
+}
 
 </script>
 
