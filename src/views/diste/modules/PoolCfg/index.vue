@@ -8,27 +8,27 @@
         <a-col :span="7">
           <a-form-item label="电脑A">
             <a-select
-                :value="aGpu"
+                v-model:value="aGpu"
                 :options="computers"
-                @change="(value:string) => handleChange('aGpu', value)"
+                @change="() => handleChange('a')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="7">
           <a-form-item label="电脑B">
             <a-select
-                :value="bGpu"
+                v-model:value="bGpu"
                 :options="computers"
-                @change="(value:string) => handleChange('bGpu', value)"
+                @change="() => handleChange('b')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="7">
           <a-form-item label="电脑C">
             <a-select
-                :value="cGpu"
+                v-model:value="cGpu"
                 :options="computers"
-                @change="(value:string) => handleChange('cGpu', value)"
+                @change="() => handleChange('c')"
             />
           </a-form-item>
         </a-col>
@@ -40,35 +40,40 @@
   </a-card>
 </template>
 <script lang="ts" setup>
-import {defineProps, ref} from "vue";
+import {ref} from "vue";
 
 const computers = [{
   value: '1',
   label: "4核GPU"
 }, {
   value: '2',
-  label: "8h核GPU"
+  label: "8核GPU"
 }, {
   value: '3',
   label: "16核GPU"
 }]
-const {aGpu, bGpu, cGpu} = defineProps<{
-  aGpu: String,
-  bGpu: String,
-  cGpu: String
-}>();
+const aGpu = ref('1');
+const bGpu = ref('2');
+const cGpu = ref('3');
+
 
 const data = ref(null)
-const reset = () => {
-  data.value = null
-}
+const reset = () => data.value = null;
 const emit = defineEmits()
-const handleChange = (gpu: 'aGpu' | 'bGpu' | 'cGpu', value: string) => {
-  emit('fetch-data', {
-    machine: gpu,
-    gpu: value
-  })
-}
+
+const handleChange = (machine: 'a' | 'b' | 'c') => {
+  let gpu = '';
+  if (machine === 'a') {
+    gpu = aGpu.value;
+  }
+  if (machine === 'b') {
+    gpu = bGpu.value;
+  }
+  if (machine === 'c') {
+    gpu = cGpu.value;
+  }
+  emit("fetch-gpu", {machine: machine, gpu: gpu});
+};
 
 const changeData = () => emit('fetch-data', data)
 

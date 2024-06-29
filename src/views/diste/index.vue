@@ -3,7 +3,7 @@
     <!--工作区-->
     <a-row justify="space-between" style="margin-top: 25px">
       <a-col :span="9">
-        <pool-cfg class="x-data" ref="xData" :aGpu="aGpu" :bGpu="bGpu" :cGpu="cGpu" @fetch-gpu="changeGpu"
+        <pool-cfg class="x-data" ref="xData" @fetch-gpu="changeGpu"
                   @fetch-data="changeData"/>
       </a-col>
       <a-col :span="15">
@@ -153,12 +153,14 @@ let pattern = '0'.repeat(difficulty);
 const mine = async () => {
   loading.value = true;
   await resetStep();
+  console.log(aGpu, bGpu, cGpu);
+  debugger
   const height: number = blocks.length + 1;
   try {
     await Promise.all([
-      mineATask(height).then(r => console.error("挖矿失败.....", r)),
-      mineBTask(height).then(r => console.error("挖矿失败.....", r)),
-      mineCTask(height).then(r => console.error("挖矿失败.....", r))
+      mineATask(height).then(() => console.error("挖矿失败.....")),
+      mineBTask(height).then(() => console.error("挖矿失败.....")),
+      mineCTask(height).then(() => console.error("挖矿失败....."))
     ]);
   } catch (error) {
     console.error("挖矿过程中出现未知错误:", error);
@@ -201,7 +203,7 @@ const mineATask = async (height: number) => {
   blockToAdd = await compute(blockToAdd, aGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps)
   if (flag) {
-    stop(steps).then(r => console.log(r));
+    await stop(steps);
   }
 }
 
@@ -217,7 +219,7 @@ const mineBTask = async (height: number) => {
   blockToAdd = await compute(blockToAdd, bGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps);
   if (flag) {
-    stop(steps).then(r => console.log(r));
+    await stop(steps);
   }
 }
 
@@ -232,7 +234,7 @@ const mineCTask = async (height: number) => {
   blockToAdd = await compute(blockToAdd, cGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps);
   if (flag) {
-    stop(steps).then(r => console.log(r));
+    await stop(steps);
   }
 }
 
@@ -240,9 +242,9 @@ const mineCTask = async (height: number) => {
  * 开始
  */
 const start = async (steps: StepProps[]) => {
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 2000))
   steps[0].status = 'process';
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 2000))
   steps[0].status = 'finish'
 }
 
@@ -250,11 +252,11 @@ const start = async (steps: StepProps[]) => {
  * 开始打包
  */
 const pkg = async (lastBlock: Block, steps: StepProps[]) => {
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'process';
   let {height, hash} = lastBlock;
   let blockToAdd: Block = {height: height + 1, nonce: 0, data: "", hash: "", previous: hash};
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'finish';
   return blockToAdd;
 }
@@ -270,13 +272,13 @@ const compute = async (blockToAdd: Block, gpu: String, steps: StepProps[]) => {
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[2].status = 'process';
   if (gpu === "1") {
-    await new Promise(resolve => setTimeout(resolve, 8000));
+    await new Promise(resolve => setTimeout(resolve, 9000));
   }
   if (gpu === "2") {
-    await new Promise(resolve => setTimeout(resolve, 4000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
   }
-  if (gpu === "2") {
-    await new Promise(resolve => setTimeout(resolve, 2000));
+  if (gpu === "3") {
+    await new Promise(resolve => setTimeout(resolve, 3000));
   }
   const {height, data} = blockToAdd;
   for (let nonce = 0; nonce < maxNonce; nonce++) {
@@ -285,6 +287,7 @@ const compute = async (blockToAdd: Block, gpu: String, steps: StepProps[]) => {
     if (encryption.startsWith(pattern)) {
       blockToAdd.nonce = nonce;
       blockToAdd.hash = encryption;
+      await new Promise(resolve => setTimeout(resolve, 2000));
       steps[2].status = 'finish';
       return blockToAdd;
     }
@@ -297,7 +300,7 @@ const compute = async (blockToAdd: Block, gpu: String, steps: StepProps[]) => {
  */
 const sync = async (blockToAdd: Block | null, height: number, steps: StepProps[]) => {
   steps[3].status = 'process';
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 2000))
   if (blocks.length === height) {
     steps[3].status = 'error';
     return false;
@@ -312,24 +315,29 @@ const sync = async (blockToAdd: Block | null, height: number, steps: StepProps[]
 /**
  * 结束
  */
-const stop = async (steps: StepProps[]) => steps[4].status = 'finish';
+const stop = async (steps: StepProps[]) => {
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  steps[4].status = 'finish';
+}
 
 /**
  * 选择GPU
  * @param res
  */
 const changeGpu = (res: any) => {
-  const {machine, gpu} = res
-  if (machine === 'aGpu') {
-    aGpu.value = gpu
+  debugger
+  const {machine, gpu} = res;
+  debugger
+  if (machine === 'a') {
+    aGpu.value = gpu;
   }
-  if (machine === 'bGpu') {
-    bGpu.value = gpu
+  if (machine === 'b') {
+    bGpu.value = gpu;
   }
-  if (machine === 'cGpu') {
-    cGpu.value = gpu
+  if (machine === 'c') {
+    cGpu.value = gpu;
   }
-}
+};
 
 /**
  * 改变数据
