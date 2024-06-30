@@ -26,24 +26,36 @@
       </a-row>
       <a-form-item label="TX" class="tx">
         <div class="rows">
-          <a-row v-for="(tx,i) in txs" :key="i" class="record">
-            <a-col :span="7">
-              <a-input addon-before="从:" size="small" v-model:value="tx.fm" @change="handleTx"/>
-            </a-col>
-            <a-col :span="7">
-              <a-input addon-before="到" size="small" v-model:value="tx.to" @change="handleTx"/>
-            </a-col>
-            <a-col :span="10">
-              <a-input-number addon-before="U" size="small" min="0" v-model:value="tx.amt" @change="handleTx"/>
-            </a-col>
-          </a-row>
+          <a-table
+              bordered
+              :columns="columns"
+              :data-source="txs"
+              :locale="locale"
+              size="small"
+              :pagination="false"
+          />
         </div>
       </a-form-item>
     </a-form>
+    <a-modal ref="xModal" v-model:open="open" title="开始转账" ok-text="确认" cancel-text="取消"
+             width="400px" :closeIcon="true" zIndex="100" @ok="onSubmit" @cancel="cancel">
+      <a-form :labelCol="{ span:5 }" :wrapperCol="{ span: 19 }" :model="formState">
+        <a-form-item label="fm" name="fm" :rules="[{ required: true, message: 'please input from address!' }]">
+          <a-input v-model:value="formState.fm" placeholder="please input from address!"/>
+        </a-form-item>
+        <a-form-item label="to" name="to" :rules="[{ required: true, message: 'please input to address!' }]">
+          <a-input v-model:value="formState.to" placeholder="please input to address!"/>
+        </a-form-item>
+        <a-form-item label="amt" name="amt" :rules="[{ required: true, message: 'please input amount!' }]">
+          <a-input-number v-model:value="formState.amt" style="width: 100%" min="0" placeholder="please input amount!"/>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </a-card>
 </template>
 <script lang="ts" setup>
 import {reactive, ref} from "vue";
+import {Tx} from "@/types/block";
 
 const computers = [{
   value: '1',
@@ -59,43 +71,37 @@ const aGpu = ref('1');
 const bGpu = ref('2');
 const cGpu = ref('3');
 
-const txs = reactive([
-  {
-    fm: "Bridge",
-    to: "Martin",
-    amt: 168.168
-  },
-  {
-    fm: "Adam",
-    to: "Wick",
-    amt: 1.68
-  },
-  {
-    fm: "Tomas",
-    to: "Tina",
-    amt: 8.61
-  }, {
-    fm: "Mike",
-    to: "Eric",
-    amt: 16.8
-  },
-  {
-    fm: "Still",
-    to: "Worth",
-    amt: 0.0168
-  }
-])
+const txs = reactive<Tx[]>([])
+const locale = {emptyText: '暂无转账记录!'}
 const reset = () => {
   aGpu.value = "1";
   bGpu.value = "2";
   cGpu.value = "3";
 }
+
+const columns = [
+  {
+    title: 'fm',
+    dataIndex: 'fm',
+    key: 'fm',
+  },
+  {
+    title: 'to',
+    dataIndex: 'to',
+    key: 'to',
+  },
+  {
+    title: 'amt',
+    dataIndex: 'amt',
+    key: 'amt',
+  },
+];
+
+const open = ref(false)
 /**
  * 转账
  */
-const transfer = () => {
-
-}
+const transfer = () => open.value = true;
 
 const emit = defineEmits()
 const handleChange = (machine: 'a' | 'b' | 'c') => {
@@ -111,8 +117,34 @@ const handleChange = (machine: 'a' | 'b' | 'c') => {
   }
   emit("fetch-gpu", {machine: machine, gpu: gpu});
 };
+const formState = ref<Tx>({
+  fm: "",
+  to: "",
+  amt: 0
+})
 
-const handleTx = () => emit("fetch-tx", txs);
+/**
+ * 确定转账
+ */
+const onSubmit = () => {
+  txs.push(formState.value);
+  emit("fetch-tx", txs);
+  resetForm();
+  open.value = false;
+}
+
+/**
+ * 取消表单
+ */
+const cancel = () => (open.value = false, resetForm());
+
+/**
+ * 重置表单
+ */
+const resetForm = () => {
+  formState.value = {fm: "", to: "", amt: 0}
+}
+
 
 defineExpose({
   reset

@@ -53,7 +53,7 @@
 import BlockChain from './modules/BlockChain/index.vue';
 import PoolCfg from './modules/PoolCfg/index.vue';
 import Computer from './modules/Computer/index.vue';
-import {Block, Tx, TxBlock} from '@/types/block';
+import {Tx, TxBlock} from '@/types/block';
 import {reactive, ref} from "vue";
 import CryptoJS from "crypto-js";
 import {message, StepProps} from "ant-design-vue";
@@ -136,13 +136,7 @@ const blocks = reactive(<TxBlock[]>[
   {
     height: 1,
     nonce: 49691,
-    txs: [
-      {fm: "Bridge", to: "Martin", amt: 168.168},
-      {fm: "Adam", to: "Wick", amt: 1.68},
-      {fm: "Tomas", to: "Tina", amt: 8.61},
-      {fm: "Mike", to: "Eric", amt: 16.8},
-      {fm: "Still", to: "Worth", amt: 0.0168}
-    ] as Tx[],
+    txs: [{fm: "Bridge", to: "Martin", amt: 168.168}] as Tx[],
     previous: '0000000000000000000000000000000000000000000000000000000000000000',
     hash: '0000b61c8bb61a6faa7c46e4872623b6e4caac5a0ae3a3b416849b216d0d62f6'
   }
@@ -206,7 +200,7 @@ const mineATask = async (height: number) => {
   let steps: StepProps[] = board[0].steps;
   await start(steps);
   let lastBlock = blocks[blocks.length - 1];
-  let blockToAdd: Block | null = await pkg(lastBlock, steps);
+  let blockToAdd: TxBlock | null = await pkg(lastBlock, steps);
   blockToAdd = await compute(blockToAdd, aGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps)
   if (flag) {
@@ -352,6 +346,7 @@ const changeGpu = (res: any) => {
  */
 const changeTx = (res: Tx[]) => {
   Object.assign(txs, {value: res});
+  console.log("此处的:", txs)
 }
 /**
  * 重置

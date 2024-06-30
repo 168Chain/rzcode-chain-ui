@@ -3,7 +3,7 @@
     <template #title>
       <span style="font-size: 18px;color: #fab301">区块</span>
     </template>
-    <a-form :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }" class="r-form">
+    <a-form :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }" class="r-form">
       <a-form-item label="高度">
         <a-input-number v-model:value="block.height" style="width: 100%" min="1">
           <template #addonBefore>
@@ -16,17 +16,7 @@
       </a-form-item>
       <a-form-item label="TX" class="tx">
         <div class="rows">
-          <a-row v-for="(tx,i) in txs" :key="i" class="record">
-            <a-col :span="7">
-              <a-input addon-before="从:" size="small" v-model:value="tx.fm"/>
-            </a-col>
-            <a-col :span="7">
-              <a-input addon-before="到" size="small" v-model:value="tx.to"/>
-            </a-col>
-            <a-col :span="10">
-              <a-input-number addon-before="U" size="small" min="0" v-model:value="tx.amt"/>
-            </a-col>
-          </a-row>
+          <a-table bordered :columns="columns" :data-source="block.txs" :locale="locale" size="small" :pagination="false"/>
         </div>
       </a-form-item>
       <a-form-item label="前指针">
@@ -39,49 +29,36 @@
   </a-card>
 </template>
 <script lang="ts" setup>
-import {defineProps, reactive} from "vue";
+import {defineProps} from "vue";
 import {TxBlock} from "@/types/block";
 
 const {block} = defineProps<{ block: TxBlock }>();
-const txs = reactive([
+const columns = [
   {
-    fm: "Bridge",
-    to: "Martin",
-    amt: 168.168
+    title: 'From',
+    dataIndex: 'fm',
+    key: 'fm',
   },
   {
-    fm: "Adam",
-    to: "Wick",
-    amt: 1.68
+    title: 'To',
+    dataIndex: 'to',
+    key: 'to',
   },
   {
-    fm: "Tomas",
-    to: "Tina",
-    amt: 8.61
-  }, {
-    fm: "Mike",
-    to: "Eric",
-    amt: 16.8
+    title: 'Amount',
+    dataIndex: 'amt',
+    key: 'amt',
   },
-  {
-    fm: "Still",
-    to: "Worth",
-    amt: 0.0168
-  }
-])
+];
 </script>
 <style lang="scss">
 .block-card-container {
-  max-width: 450px;
+  min-width: 450px;
 
   .tx {
     .rows {
       padding: 10px 5px;
       border: solid 1px #f1f1f1;
-
-      .record {
-        margin-bottom: 5px;
-      }
     }
   }
 
