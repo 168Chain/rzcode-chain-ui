@@ -16,7 +16,8 @@
       </a-form-item>
       <a-form-item label="TX" class="tx">
         <div class="rows">
-          <a-table bordered :columns="columns" :data-source="block.txs" :locale="locale" size="small" :pagination="false"/>
+          <a-table bordered :columns="columns" :data-source="block.txs" :locale="locale" size="small"
+                   :pagination="false"/>
         </div>
       </a-form-item>
       <a-form-item label="前指针">
@@ -35,17 +36,17 @@ import {TxBlock} from "@/types/block";
 const {block} = defineProps<{ block: TxBlock }>();
 const columns = [
   {
-    title: 'From',
+    title: 'fm',
     dataIndex: 'fm',
     key: 'fm',
   },
   {
-    title: 'To',
+    title: 'to',
     dataIndex: 'to',
     key: 'to',
   },
   {
-    title: 'Amount',
+    title: 'amt',
     dataIndex: 'amt',
     key: 'amt',
   },
