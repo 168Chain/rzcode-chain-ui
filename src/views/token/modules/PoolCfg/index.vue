@@ -47,7 +47,8 @@
           <a-input v-model:value="formState.to" placeholder="please input to address!"/>
         </a-form-item>
         <a-form-item label="amt" name="amt" :rules="[{ required: true, message: 'please input amount!' }]">
-          <a-input-number v-model:value="formState.amt" style="width: 100%" min="0" placeholder="please input amount!"/>
+          <a-input-number addonAfter="Bells" v-model:value="formState.amt" style="width: 100%" min="0"
+                          placeholder="please input amount!"/>
         </a-form-item>
       </a-form>
     </a-modal>
