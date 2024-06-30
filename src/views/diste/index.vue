@@ -64,7 +64,6 @@ import CryptoJS from "crypto-js";
 import {message, StepProps} from "ant-design-vue";
 
 const loading = ref(false)
-const xData = ref()
 const maxNonce = 500000;
 const data = ref("");
 const aGpu = ref("1");

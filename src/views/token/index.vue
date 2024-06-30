@@ -256,7 +256,7 @@ const pkg = async (lastBlock: TxBlock, steps: StepProps[]) => {
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'process';
   let {height, hash} = lastBlock;
-  let blockToAdd: TxBlock = {height: height + 1, nonce: 0, txs: txs.value, hash: "", previous: hash};
+  let blockToAdd: TxBlock = {height: height + 1, nonce: 0, txs: txs, hash: "", previous: hash};
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'finish';
   return blockToAdd;

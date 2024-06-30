@@ -5,7 +5,7 @@
     </template>
     <a-form :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }" class="r-form">
       <a-form-item label="高度">
-        <a-input-number v-model:value="block.height" style="width: 100%" min="1" @change="changeHash">
+        <a-input-number v-model:value="block.height" style="width: 100%" min="1">
           <template #addonBefore>
             <span>#</span>
           </template>

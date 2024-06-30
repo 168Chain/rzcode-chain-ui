@@ -16,8 +16,14 @@
       </a-form-item>
       <a-form-item label="TX" class="tx">
         <div class="rows">
-          <a-table bordered :columns="columns" :data-source="block.txs" :locale="locale" size="small"
-                   :pagination="false"/>
+          <a-table
+              bordered
+              :columns="columns"
+              :data-source="block.txs"
+              :locale="locale"
+              size="small"
+              :pagination="false"
+          />
         </div>
       </a-form-item>
       <a-form-item label="前指针">
@@ -33,6 +39,7 @@
 import {defineProps} from "vue";
 import {TxBlock} from "@/types/block";
 
+const locale = {emptyText: '暂无转账记录!'}
 const {block} = defineProps<{ block: TxBlock }>();
 const columns = [
   {

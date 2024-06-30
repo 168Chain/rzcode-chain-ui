@@ -39,10 +39,10 @@
   </a-card>
 </template>
 <script lang="ts" setup>
-import {defineProps, ref} from "vue";
-import {TxBlock} from "@/types/block";
+import {defineProps} from "vue";
+import {MiniBlock} from "@/types/block";
 
-const {block} = defineProps<{ block: TxBlock }>();
+const {block} = defineProps<{ block: MiniBlock }>();
 const locale = {emptyText: '暂无转账记录!'}
 const columns = [
   {

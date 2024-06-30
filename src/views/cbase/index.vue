@@ -380,13 +380,9 @@ const reset = () => {
   blocks.splice(0, blocks.length, {
     height: 1,
     nonce: 49691,
-    txs: [
-      {fm: "Bridge", to: "Martin", amt: 168.168},
-      {fm: "Adam", to: "Wick", amt: 1.68},
-      {fm: "Tomas", to: "Tina", amt: 8.61},
-      {fm: "Mike", to: "Eric", amt: 16.8},
-      {fm: "Still", to: "Worth", amt: 0.0168}
-    ] as Tx[],
+    award: 50,
+    txs: [] as Tx[],
+    miner: 'Bridge',
     previous: '0000000000000000000000000000000000000000000000000000000000000000',
     hash: '0000b61c8bb61a6faa7c46e4872623b6e4caac5a0ae3a3b416849b216d0d62f6'
   });

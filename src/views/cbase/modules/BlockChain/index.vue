@@ -6,9 +6,9 @@
 <script setup lang="ts">
 import BlockCard from "../BlockCard/index.vue";
 import {defineProps} from "vue";
-import {TxBlock} from "@/types/block";
+import {MiniBlock} from "@/types/block";
 
-const {blocks} = defineProps<{ blocks: TxBlock[] }>();
+const {blocks} = defineProps<{ blocks: MiniBlock[] }>();
 
 </script>
 <style lang="scss">

@@ -50,8 +50,6 @@ const maxNonce = 500000;
  */
 let difficulty = 4;
 let pattern = '0'.repeat(difficulty);
-console.log(pattern)
-
 
 const changeHash = () => {
   let str = height.value + nonce.value + data.value;
