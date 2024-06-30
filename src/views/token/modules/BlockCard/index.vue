@@ -22,6 +22,13 @@
       <a-form-item label="数据">
         <a-textarea :rows="4" v-model:value="block.data"/>
       </a-form-item>
+      <a-form-item label="前指针">
+        <a-textarea
+            :row="2" disabled
+            v-model:value="block.previous"
+            style="font-size: 12px"
+        />
+      </a-form-item>
       <a-form-item label="哈希">
         <a-textarea
             :row="2" disabled
