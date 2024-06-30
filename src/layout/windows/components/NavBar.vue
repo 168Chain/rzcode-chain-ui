@@ -34,7 +34,7 @@
       </div>
       <div class="navlist">
         <div class="navitem">
-          <p @click="doMenu('minic')">迷你链</p>
+          <p><a href="https://gitee.com/smilesnail/mini-chain">迷你链</a></p>
         </div>
       </div>
     </div>
