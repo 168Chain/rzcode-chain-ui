@@ -3,6 +3,9 @@
     <template #title>
       <span class="title">配置</span>
     </template>
+    <template #extra>
+      <a-button plain @click="transfer" danger>转账</a-button>
+    </template>
     <a-form ref="formRef">
       <a-row justify="space-between">
         <a-col :span="7">
@@ -21,17 +24,17 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <a-form-item label="Tx" class="tx">
+      <a-form-item label="TX" class="tx">
         <div class="rows">
           <a-row v-for="(tx,i) in txs" :key="i" class="record">
-            <a-col :span="8">
-              <a-input addon-before="从:" size="small" v-model:value="tx.fm"/>
+            <a-col :span="7">
+              <a-input addon-before="从:" size="small" v-model:value="tx.fm" @change="handleTx"/>
             </a-col>
-            <a-col :span="8">
-              <a-input addon-before="到" size="small" v-model:value="tx.to"/>
+            <a-col :span="7">
+              <a-input addon-before="到" size="small" v-model:value="tx.to" @change="handleTx"/>
             </a-col>
-            <a-col :span="8">
-              <a-input-number addon-before="$" size="small" min="0" v-model:value="tx.amt"/>
+            <a-col :span="10">
+              <a-input-number addon-before="U" size="small" min="0" v-model:value="tx.amt" @change="handleTx"/>
             </a-col>
           </a-row>
         </div>
@@ -56,8 +59,6 @@ const aGpu = ref('1');
 const bGpu = ref('2');
 const cGpu = ref('3');
 
-
-const data = ref(null)
 const txs = reactive([
   {
     fm: "Bridge",
@@ -65,17 +66,17 @@ const txs = reactive([
     amt: 168.168
   },
   {
-    fm: "Ivan",
-    to: "Tina",
+    fm: "Adam",
+    to: "Wick",
     amt: 1.68
   },
   {
     fm: "Tomas",
-    to: "Brady",
+    to: "Tina",
     amt: 8.61
   }, {
-    fm: "Wick",
-    to: "Spring",
+    fm: "Mike",
+    to: "Eric",
     amt: 16.8
   },
   {
@@ -85,13 +86,18 @@ const txs = reactive([
   }
 ])
 const reset = () => {
-  data.value = null;
   aGpu.value = "1";
   bGpu.value = "2";
   cGpu.value = "3";
 }
-const emit = defineEmits()
+/**
+ * 转账
+ */
+const transfer = () => {
 
+}
+
+const emit = defineEmits()
 const handleChange = (machine: 'a' | 'b' | 'c') => {
   let gpu = '';
   if (machine === 'a') {
@@ -105,6 +111,8 @@ const handleChange = (machine: 'a' | 'b' | 'c') => {
   }
   emit("fetch-gpu", {machine: machine, gpu: gpu});
 };
+
+const handleTx = () => emit("fetch-tx", txs);
 
 defineExpose({
   reset
