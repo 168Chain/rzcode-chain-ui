@@ -14,6 +14,15 @@
       <a-form-item label="随机数">
         <a-input-number v-model:value="block.nonce" min="1" max="500000" style="width: 100%"/>
       </a-form-item>
+      <a-form-item label="币基">
+        <div class="rows">
+          <a-input-group compact>
+            <a-input addonBefore="Bells" v-model:value="block.award" style="width: 50%"/>
+            <a-input style="width: 15%" value="->" disabled/>
+            <a-input style="width: 30%" v-model:value="block.miner"/>
+          </a-input-group>
+        </div>
+      </a-form-item>
       <a-form-item label="TX" class="tx">
         <div class="rows">
           <a-table bordered :columns="columns" :data-source="block.txs" :locale="locale" size="small"
@@ -30,10 +39,11 @@
   </a-card>
 </template>
 <script lang="ts" setup>
-import {defineProps} from "vue";
+import {defineProps, ref} from "vue";
 import {TxBlock} from "@/types/block";
 
 const {block} = defineProps<{ block: TxBlock }>();
+const locale = {emptyText: '暂无转账记录!'}
 const columns = [
   {
     title: 'fm',
@@ -54,7 +64,7 @@ const columns = [
 </script>
 <style lang="scss">
 .block-card-container {
-  min-width: 450px;
+  max-width: 450px;
 
   .tx {
     .rows {

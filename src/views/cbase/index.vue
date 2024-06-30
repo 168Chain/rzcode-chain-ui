@@ -56,7 +56,7 @@
 import BlockChain from './modules/BlockChain/index.vue';
 import MachineCfg from './modules/MachineCfg/index.vue';
 import Computer from './modules/Computer/index.vue';
-import {Tx, TxBlock} from '@/types/block';
+import {MiniBlock, Tx} from '@/types/block';
 import {reactive, ref} from "vue";
 import CryptoJS from "crypto-js";
 import {message, StepProps} from "ant-design-vue";
@@ -67,7 +67,7 @@ const txs = reactive<Tx[]>([]);
 const aGpu = ref("1");
 const bGpu = ref("2");
 const cGpu = ref("3");
-
+const award = ref<number>(50);
 const board = reactive([
   {
     title: '电脑A',
@@ -132,12 +132,14 @@ const board = reactive([
       }
     ] as StepProps[]
   }
-])
-const blocks = reactive(<TxBlock[]>[
+]);
+const blocks = reactive(<MiniBlock[]>[
   {
     height: 1,
     nonce: 49691,
-    txs: [{fm: "Bridge", to: "Martin", amt: 168.168}] as Tx[],
+    award: 50,
+    txs: [] as Tx[],
+    miner: 'Bridge',
     previous: '0000000000000000000000000000000000000000000000000000000000000000',
     hash: '0000b61c8bb61a6faa7c46e4872623b6e4caac5a0ae3a3b416849b216d0d62f6'
   }
@@ -204,7 +206,7 @@ const mineATask = async (height: number) => {
   let steps: StepProps[] = board[0].steps;
   await start(steps);
   let lastBlock = blocks[blocks.length - 1];
-  let blockToAdd: TxBlock | null = await pkg(lastBlock, steps);
+  let blockToAdd: MiniBlock | null = await pkg(lastBlock, steps, "Aminer");
   blockToAdd = await compute(blockToAdd, aGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps)
   if (flag) {
@@ -220,7 +222,7 @@ const mineBTask = async (height: number) => {
   let steps: StepProps[] = board[1].steps;
   await start(steps);
   let lastBlock = blocks[blocks.length - 1];
-  let blockToAdd: TxBlock | null = await pkg(lastBlock, steps);
+  let blockToAdd: MiniBlock | null = await pkg(lastBlock, steps, "Bminer");
   blockToAdd = await compute(blockToAdd, bGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps);
   if (flag) {
@@ -235,7 +237,7 @@ const mineCTask = async (height: number) => {
   let steps: StepProps[] = board[2].steps;
   await start(steps);
   let lastBlock = blocks[blocks.length - 1];
-  let blockToAdd: TxBlock | null = await pkg(lastBlock, steps);
+  let blockToAdd: MiniBlock | null = await pkg(lastBlock, steps, "Cminer");
   blockToAdd = await compute(blockToAdd, cGpu.value, steps);
   let flag: boolean | void = await sync(blockToAdd, height, steps);
   if (flag) {
@@ -256,11 +258,19 @@ const start = async (steps: StepProps[]) => {
 /**
  * 开始打包
  */
-const pkg = async (lastBlock: TxBlock, steps: StepProps[]) => {
+const pkg = async (lastBlock: MiniBlock, steps: StepProps[], miner: string) => {
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'process';
   let {height, hash} = lastBlock;
-  let blockToAdd: TxBlock = {height: height + 1, nonce: 0, txs: txs.value, hash: "", previous: hash};
+  let blockToAdd: MiniBlock = {
+    height: height + 1,
+    nonce: 0,
+    txs: txs,
+    hash: "",
+    previous: hash,
+    award: award.value,
+    miner: miner
+  };
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[1].status = 'finish';
   return blockToAdd;
@@ -273,7 +283,7 @@ const pkg = async (lastBlock: TxBlock, steps: StepProps[]) => {
  * @param steps
  * @returns 返回Promise，表示计算操作的完成。
  */
-const compute = async (blockToAdd: TxBlock, gpu: String, steps: StepProps[]) => {
+const compute = async (blockToAdd: MiniBlock, gpu: String, steps: StepProps[]) => {
   await new Promise(resolve => setTimeout(resolve, 2000))
   steps[2].status = 'process';
   if (gpu === "1") {
@@ -305,7 +315,7 @@ const compute = async (blockToAdd: TxBlock, gpu: String, steps: StepProps[]) => 
 /**
  * 开始同步
  */
-const sync = async (blockToAdd: TxBlock | null, height: number, steps: StepProps[]) => {
+const sync = async (blockToAdd: MiniBlock | null, height: number, steps: StepProps[]) => {
   steps[3].status = 'process';
   await new Promise(resolve => setTimeout(resolve, 2000))
   if (blocks.length === height) {
@@ -314,6 +324,16 @@ const sync = async (blockToAdd: TxBlock | null, height: number, steps: StepProps
   }
   if (blockToAdd !== null) {
     blocks.push(blockToAdd);
+    let award = blockToAdd.award;
+    if (blockToAdd.miner === "Aminer") {
+      awallet.value = awallet.value + award;
+    }
+    if (blockToAdd.miner === "Cminer") {
+      bwallet.value = bwallet.value + award;
+    }
+    if (blockToAdd.miner === "Cminer") {
+      cwallet.value = cwallet.value + award;
+    }
   }
   steps[3].status = 'finish';
   return true;

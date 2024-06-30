@@ -15,6 +15,16 @@ export interface TxBlock {
     previous: string;
 }
 
+export interface MiniBlock {
+    height: number;
+    nonce: number;
+    award: number,
+    txs: Tx[];
+    miner: string;
+    hash: string;
+    previous: string;
+}
+
 export interface Tx {
     fm: string,
     to: string,
