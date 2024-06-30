@@ -6,12 +6,12 @@
     <div class="middle">
       <router-view/>
     </div>
-    <!--    <footer-bottom/>-->
+    <footer-bottom/>
   </section>
 </template>
 <script setup lang="ts">
 import NavBar from './components/NavBar.vue';
-// import FooterBottom from './components/Bottom.vue'
+import FooterBottom from './components/Bottom.vue'
 </script>
 <style lang="scss" scoped>
 
